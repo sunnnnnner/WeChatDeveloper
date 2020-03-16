@@ -12,28 +12,29 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-// 1. 手动加载入口文件
-include "../include.php";
+namespace WeMini;
 
-// 2. 准备公众号配置参数
-$config = include "./alipay.php";
+use WeChat\Contracts\BasicWeChat;
 
-try {
-    // 实例支付对象
-    // $pay = \We::AliPayApp($config);
-    // $pay = new \AliPay\App($config);
-    $pay = \AliPay\App::instance($config);
+/**
+ * 小程序生物认证
+ * Class Soter
+ * @package WeMini
+ */
+class Soter extends BasicWeChat
+{
+    /**
+     * SOTER 生物认证秘钥签名验证
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function verifySignature($data)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/soter/verify_signature?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
 
-    // 请参考（请求参数）：https://docs.open.alipay.com/api_1/alipay.trade.app.pay
-    $result = $pay->apply([
-        'out_trade_no' => time(), // 商户订单号
-        'total_amount' => '1', // 支付金额
-        'subject'      => 'test subject', // 支付订单描述
-    ]);
-    echo '<pre>';
-    var_export($result);
-} catch (\Exception $e) {
-    echo $e->getMessage();
 }
-
-

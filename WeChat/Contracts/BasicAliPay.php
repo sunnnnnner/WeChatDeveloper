@@ -44,6 +44,12 @@ abstract class BasicAliPay
     protected $params;
 
     /**
+     * 静态缓存
+     * @var static
+     */
+    protected static $cache;
+
+    /**
      * 正常请求网关
      * @var string
      */
@@ -86,6 +92,18 @@ abstract class BasicAliPay
         if (isset($options['app_auth_token']) && $options['app_auth_token'] !== '') {
             $this->options->set('app_auth_token', $options['app_auth_token']);
         }
+    }
+
+    /**
+     * 静态创建对象
+     * @param array $config
+     * @return static
+     */
+    public static function instance(array $config)
+    {
+        $key = md5(get_called_class() . serialize($config));
+        if (isset(self::$cache[$key])) return self::$cache[$key];
+        return self::$cache[$key] = new static($config);
     }
 
     /**
@@ -180,7 +198,7 @@ abstract class BasicAliPay
      */
     protected function getSign()
     {
-        $content = wordwrap($this->config->get('private_key'), 64, "\n", true);
+        $content = wordwrap($this->trimCert($this->config->get('private_key')), 64, "\n", true);
         $string = "-----BEGIN RSA PRIVATE KEY-----\n{$content}\n-----END RSA PRIVATE KEY-----";
         if ($this->options->get('sign_type') === 'RSA2') {
             openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA256);
@@ -188,6 +206,17 @@ abstract class BasicAliPay
             openssl_sign($this->getSignContent($this->options->get(), true), $sign, $string, OPENSSL_ALGO_SHA1);
         }
         return base64_encode($sign);
+    }
+
+    /**
+     * 去除证书前后内容及空白
+     * @param string $sign
+     * @return string
+     */
+    protected function trimCert($sign)
+    {
+        // if (file_exists($sign)) $sign = file_get_contents($sign);
+        return preg_replace(['/\s+/', '/\-{5}.*?\-{5}/'], '', $sign);
     }
 
     /**
@@ -256,6 +285,75 @@ abstract class BasicAliPay
         }
         $html .= "<input type='submit' value='ok' style='display:none;'></form>";
         return "{$html}<script>document.forms['alipaysubmit'].submit();</script>";
+    }
+
+    /**
+     * 新版 从证书中提取序列号
+     * @param string $sign
+     * @return string
+     */
+    public function getCertSN($sign)
+    {
+        // if (file_exists($sign)) $sign = file_get_contents($sign);
+        $ssl = openssl_x509_parse($sign);
+        return md5($this->_arr2str(array_reverse($ssl['issuer'])) . $ssl['serialNumber']);
+    }
+
+    /**
+     * 新版 提取根证书序列号
+     * @param string $sign
+     * @return string|null
+     */
+    public function getRootCertSN($sign)
+    {
+        $sn = null;
+        // if (file_exists($sign)) $sign = file_get_contents($sign);
+        $array = explode("-----END CERTIFICATE-----", $sign);
+        for ($i = 0; $i < count($array) - 1; $i++) {
+            $ssl[$i] = openssl_x509_parse($array[$i] . "-----END CERTIFICATE-----");
+            if (strpos($ssl[$i]['serialNumber'], '0x') === 0) {
+                $ssl[$i]['serialNumber'] = $this->_hex2dec($ssl[$i]['serialNumber']);
+            }
+            if ($ssl[$i]['signatureTypeLN'] == "sha1WithRSAEncryption" || $ssl[$i]['signatureTypeLN'] == "sha256WithRSAEncryption") {
+                if ($sn == null) {
+                    $sn = md5($this->_arr2str(array_reverse($ssl[$i]['issuer'])) . $ssl[$i]['serialNumber']);
+                } else {
+                    $sn = $sn . "_" . md5($this->_arr2str(array_reverse($ssl[$i]['issuer'])) . $ssl[$i]['serialNumber']);
+                }
+            }
+        }
+        return $sn;
+    }
+
+    /**
+     * 新版 数组转字符串
+     * @param array $array
+     * @return string
+     */
+    private function _arr2str($array)
+    {
+        $string = [];
+        if ($array && is_array($array)) {
+            foreach ($array as $key => $value) {
+                $string[] = $key . '=' . $value;
+            }
+        }
+        return implode(',', $string);
+    }
+
+
+    /**
+     * 新版 0x转高精度数字
+     * @param string $hex
+     * @return int|string
+     */
+    private function _hex2dec($hex)
+    {
+        list($dec, $len) = [0, strlen($hex)];
+        for ($i = 1; $i <= $len; $i++) {
+            $dec = bcadd($dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
+        }
+        return $dec;
     }
 
     /**

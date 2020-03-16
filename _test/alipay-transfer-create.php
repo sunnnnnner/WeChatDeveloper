@@ -20,20 +20,25 @@ $config = include "./alipay.php";
 
 try {
     // 实例支付对象
-    // $pay = \We::AliPayApp($config);
-    // $pay = new \AliPay\App($config);
-    $pay = \AliPay\App::instance($config);
+    // $pay = We::AliPayTransfer($config);
+    // $pay = new \AliPay\Transfer($config);
+    $pay = \AliPay\Transfer::instance($config);
 
-    // 请参考（请求参数）：https://docs.open.alipay.com/api_1/alipay.trade.app.pay
-    $result = $pay->apply([
-        'out_trade_no' => time(), // 商户订单号
-        'total_amount' => '1', // 支付金额
-        'subject'      => 'test subject', // 支付订单描述
+    // 参考链接：https://docs.open.alipay.com/api_28/alipay.fund.trans.uni.transfer/
+    $result = $pay->create([
+        'out_biz_no'   => time(), // 订单号
+        'trans_amount' => '10', // 转账金额
+        'product_code' => 'TRANS_ACCOUNT_NO_PWD',
+        'biz_scene'    => 'DIRECT_TRANSFER',
+        'payee_info'   => [
+            'identity'      => 'zoujingli@qq.com',
+            'identity_type' => 'ALIPAY_LOGON_ID',
+            'name'          => '邹景立',
+        ],
     ]);
     echo '<pre>';
     var_export($result);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo $e->getMessage();
 }
-
 

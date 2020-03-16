@@ -12,28 +12,30 @@
 // | github开源项目：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
-// 1. 手动加载入口文件
-include "../include.php";
+namespace WeMini;
 
-// 2. 准备公众号配置参数
-$config = include "./alipay.php";
+use WeChat\Contracts\BasicWeChat;
 
-try {
-    // 实例支付对象
-    // $pay = \We::AliPayApp($config);
-    // $pay = new \AliPay\App($config);
-    $pay = \AliPay\App::instance($config);
+/**
+ * 小程序运维中心
+ * Class Operation
+ * @package WeMini
+ */
+class Operation extends BasicWeChat
+{
 
-    // 请参考（请求参数）：https://docs.open.alipay.com/api_1/alipay.trade.app.pay
-    $result = $pay->apply([
-        'out_trade_no' => time(), // 商户订单号
-        'total_amount' => '1', // 支付金额
-        'subject'      => 'test subject', // 支付订单描述
-    ]);
-    echo '<pre>';
-    var_export($result);
-} catch (\Exception $e) {
-    echo $e->getMessage();
+    /**
+     * 实时日志查询
+     * @param array $data
+     * @return array
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     */
+    public function realtimelogSearch($data)
+    {
+        $url = 'https://api.weixin.qq.com/wxaapi/userlog/userlog_search?access_token=ACCESS_TOKEN';
+        $this->registerApi($url, __FUNCTION__, func_get_args());
+        return $this->callPostApi($url, $data, true);
+    }
+
 }
-
-
