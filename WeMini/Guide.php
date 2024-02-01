@@ -3,13 +3,15 @@
 // +----------------------------------------------------------------------
 // | WeChatDeveloper
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2018 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2024 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/WeChatDeveloper
+// | gitee 代码仓库：https://gitee.com/zoujingli/WeChatDeveloper
+// | github 代码仓库：https://github.com/zoujingli/WeChatDeveloper
 // +----------------------------------------------------------------------
 
 namespace WeMini;
@@ -33,7 +35,6 @@ class Guide extends BasicWeChat
     public function addGuideAcct($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/addguideacct?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -47,7 +48,6 @@ class Guide extends BasicWeChat
     public function delGuideAcct($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/delguideacct?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -61,7 +61,6 @@ class Guide extends BasicWeChat
     public function getGuideAcct($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguideacct?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -74,7 +73,6 @@ class Guide extends BasicWeChat
     public function getGuideAcctConfig()
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguideacctconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, [], true);
     }
 
@@ -89,7 +87,6 @@ class Guide extends BasicWeChat
     public function getGuideAcctList($page = 0, $num = 10)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguideacctconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, ['page' => $page, 'num' => $num], true);
     }
 
@@ -103,7 +100,6 @@ class Guide extends BasicWeChat
     public function getGuideBuyerChatRecord($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguideacct?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -117,7 +113,6 @@ class Guide extends BasicWeChat
     public function getGuideConfig($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguideconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -131,7 +126,6 @@ class Guide extends BasicWeChat
     public function guideCreateQrCode($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/guidecreateqrcode?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -144,7 +138,6 @@ class Guide extends BasicWeChat
     public function pushShowWxaPathMenu($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/pushshowwxapathmenu?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -158,7 +151,6 @@ class Guide extends BasicWeChat
     public function setGuideAcctConfig($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/setguideacctconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -172,7 +164,6 @@ class Guide extends BasicWeChat
     public function setGuideConfig($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/setguideconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -186,7 +177,6 @@ class Guide extends BasicWeChat
     public function updateGuideAcct($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/setguideconfig?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -200,7 +190,6 @@ class Guide extends BasicWeChat
     public function addGuideBuyerDisplayTag($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/addguidebuyerdisplaytag?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -214,7 +203,6 @@ class Guide extends BasicWeChat
     public function addGuideBuyerTag($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/addguidebuyertag?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -228,10 +216,8 @@ class Guide extends BasicWeChat
     public function addGuideTagOption($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/addguidetagoption?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
-
 
     /**
      * 删除粉丝标签
@@ -243,7 +229,6 @@ class Guide extends BasicWeChat
     public function delGuideBuyerTag($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/delguidebuyertag?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -257,7 +242,6 @@ class Guide extends BasicWeChat
     public function getGuideBuyerDisplayTag($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguidebuyerdisplaytag?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -271,7 +255,6 @@ class Guide extends BasicWeChat
     public function getGuideBuyerTag($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguidebuyertag?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -284,7 +267,6 @@ class Guide extends BasicWeChat
     public function getGuideTagOption()
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/getguidetagoption?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, [], true);
     }
 
@@ -298,7 +280,6 @@ class Guide extends BasicWeChat
     public function newGuideTagOption($data)
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/guide/newguidetagoption?access_token=ACCESS_TOKEN';
-        $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
 
@@ -543,5 +524,4 @@ class Guide extends BasicWeChat
         $this->registerApi($url, __FUNCTION__, func_get_args());
         return $this->callPostApi($url, $data, true);
     }
-
 }
