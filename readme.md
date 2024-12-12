@@ -43,8 +43,11 @@ WeChatDeveloper 是基于官方接口封装，在做微信开发前，必需先�
 ----
 WeChatDeveloper 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
 
-* Gitee 托管地址：https://gitee.com/zoujingli/WeChatDeveloper
-* GitHub 托管地址：https://github.com/zoujingli/WeChatDeveloper
+我们的代码仓库已移至 **Github**，而 **Gitee** 和 **Gitcode** 则仅作为国内镜像仓库，方便广大开发者获取和使用。若想提交 **PR** 或 **ISSUE** 请在 [WeChatDeveloper](https://github.com/zoujingli/WeChatDeveloper) 仓库进行操作，如果在其他仓库操作或提交问题将无法处理！
+
+* Gitee 仓库地址：https://gitee.com/zoujingli/WeChatDeveloper
+* GitHub 仓库地址：https://github.com/zoujingli/WeChatDeveloper
+* GitCode 仓库地址：https://gitcode.com/ThinkAdmin/WeChatDeveloper
 
 文件说明（后续会根据官方文档增加文件）
 ----
@@ -114,6 +117,32 @@ include "您的目录/WeChatDeveloper/include.php";
 2.1 接口实例所需参数
 
 ```php
+// =====================================================
+// 配置缓存处理函数 ( 适配其他环境 )
+// -----------------------------------------------------
+// 数据缓存 (set|get|del) 操作可以将缓存写到任意位置或Redis
+// 文件缓存 (put) 只能写在本地服务器，还需要返回可读的文件路径
+// 未配置自定义缓存处理机制时，默认在 cache_path 写入文件缓存
+// // =====================================================
+// \WeChat\Contracts\Tools::$cache_callable = [
+//    'set' => function ($name, $value, $expired = 360) {
+//        var_dump(func_get_args());
+//         return $value;
+//    },
+//    'get' => function ($name) {
+//        var_dump(func_get_args());
+//        return $value;
+//    },
+//    'del' => function ($name) {
+//        var_dump(func_get_args());
+//        return true;
+//    },
+//    'put' => function ($name) {
+//        var_dump(func_get_args());
+//        return $filePath;
+//    },
+// ];
+
 $config = [
     'token'          => 'test',
     'appid'          => 'wx60a43dd8161666d4',
